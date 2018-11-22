@@ -32,7 +32,7 @@ class StdOutListener(StreamListener):
     print(status)
 
 # These are the keywords we are searching
-keywords = ['Prime Minister', 'Israel', 'president', 'Gaza']
+keywords = ['Prime Minister', 'Israel', 'President', 'Tel Aviv']
 # ---------------------------------------------------
 
 if __name__ == '__main__':
