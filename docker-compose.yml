@@ -15,11 +15,11 @@ services:
   mongo_q:
     build: ./webapp
     container_name: "webapp2"
-  volumes:
-     - ./logs:logs
+    volumes:
+      - ./logs:/logs
     depends_on:
-     - mongodb2
+      - mongodb2
     links:
-     - mongodb2
+      - mongodb2
     ports:
       - "0.0.0.0:5000:5000"
