@@ -13,7 +13,7 @@ services:
     ports:
       - "27017:27017"
   mongo_q:
-    build: ../mquery
+    build: ./webapp
     container_name: "webapp2"
     depends_on:
      - mongodb2
