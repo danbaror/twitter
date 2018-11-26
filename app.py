@@ -12,7 +12,6 @@ db = client.twitterDB
 # This is a listener that inserts twwets to Mongo DB.
 class StdOutListener(StreamListener):
 
-  
   def on_data(self, data):
   
     data = json.loads(data)
