@@ -1,4 +1,5 @@
 import json
+import pprint
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
@@ -22,26 +23,29 @@ class StdOutListener(StreamListener):
           twitterDoc = {'keyword': keyword,'Created_at':data['created_at'],'Id':data['id'],'Text':data['text'],'Source':data['source'],'Truncated':data['truncated'],'Geo':data['geo']}
           # print(" Debug: ", twitterDoc)
           result = db.twitterdata.insert_one(twitterDoc)
-          print('Info: Created one record in Mongo DB:', result.inserted_id)
+          print('Info: Created a record for keyword {:14s} in Mongo DB: {}'.format(keyword, result.inserted_id))
       return True
     except Exception as e:
-      print("Error - some error", e) 
+      print("Error - Mongo DB error:")
+      pprint(e) 
       return False
 
   def on_error(self, status):
     print(status)
 
 # These are the keywords we are searching
-keywords = ['Prime Minister', 'Israel', 'President', 'Tel Aviv']
-# ---------------------------------------------------
+keywords = ['Israel', 'Tel Aviv', 'Jeruslaem', 'Jaffa', 'Haifa']
+# -----------------------------------------------------------------
 
 if __name__ == '__main__':
 # ----------------------------------
 # load my Twitter API credentials
 # ----------------------------------
-    with open('.config', "r") as cred_file:
+    try:
+      with open('/tmp/.config', "r") as cred_file:
         config = json.loads(cred_file.read())
-
+    except Exception as e:
+      print("Error: cound not open config file. {}".format(e))
     # This handles Twitter authetification and the connection to Twitter Streaming API
     l = StdOutListener()
     auth = OAuthHandler(config['consumer_key'], config['consumer_secret'])
