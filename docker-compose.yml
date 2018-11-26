@@ -15,7 +15,7 @@ services:
   mongo_q:
     build: ./webapp
     container_name: "webapp2"
-volumes:
+  volumes:
      - ./logs:logs
     depends_on:
      - mongodb2
