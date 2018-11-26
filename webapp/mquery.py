@@ -8,12 +8,12 @@ client = MongoClient('mongodb2',27017)
 # Set the db object to point to the business database
 db=client.twitterDB
 
-version = 'Version 1.3'
+version = ' --- Version 1.5.3 ---'
 print("Debug: Connected to Mongo DB.")
 
 def get_hit_count():
     str = "<!DOCTYPE html><head><title>Twitter Counter</title></head>"
-    str += "<body><h1> Twitter keyword analytics: </h1><p>" + version + "</p>"
+    str += "<body><h1> Twitter keyword analytics: </h1><p><strong>" + version + "</strong></p>"
     keygroup=db.twitterdata.aggregate( [ { '$group': { '_id' : "$keyword", "count" : { '$sum' :1 } } }, {"$sort":  { "_id":1} } ] )
     for group in keygroup:
         str += "<p> %s: %d </P>" % (group['_id'],group['count'])
@@ -22,7 +22,6 @@ def get_hit_count():
 
     
 @app.route('/')
-
 
 def hello():
     vector = get_hit_count()
