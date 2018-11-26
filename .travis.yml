@@ -5,6 +5,7 @@ install:
 
 script:
   - docker tag twitter_api:latest danbaror/twittc:twitter_api
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push danbaror/twittc:twitter_api
   - ls -lah
   - docker-compose up -d 
