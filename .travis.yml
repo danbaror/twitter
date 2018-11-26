@@ -1,9 +1,11 @@
 language: python
 
 install:
-  - sudo docker build .
+  - sudo docker build -t twitter_api:latest .
 
 script:
+  - docker tag twitter_api:latest danbaror/twittc:twitter_api
+  - docker push danbaror/twittc:twitter_api
   - ls -lah
   - docker-compose up -d 
   - docker-compose ps
