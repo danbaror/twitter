@@ -1,0 +1,75 @@
+---
+- name: Run using a project directory
+  hosts: webapp
+  connection: local
+  gather_facts: no
+  become: True
+  tasks:
+    - name: Install pip
+      apt: name=python-pip state=present
+    - name: install docker-compose
+      pip: name=docker-compose state=present
+      with_items:
+        - docker-py==1.10.6
+        - docker-compose==1.9.0
+
+    - name: install docker package
+      pip: name=docker state=present
+    
+    - set_fact: compose_dir="/home/ubuntu/mongo/"
+
+    - file: 
+        path: "{{ compose_dir }}"
+        state: directory
+
+    - name: Upload docker-compose file
+      copy: 
+        src: /home/ubuntu/mongo/twitter/
+        dest: "{{ compose_dir }}"
+        owner: ubuntu
+        group: ubuntu
+      register: output
+
+    - debug:
+        var: output
+
+    - name: stop docker-compose containers
+      command: docker-compose stop
+      args:
+        chdir: "{{ compose_dir }}" 
+
+    - name: remove previous images
+      command: docker image ls -a | grep -e mongo_q -e twitter_app | xargs docker image rm
+      args:
+        chdir: "{{ compose_dir }}" 
+
+    - name: remove stopped containers
+      command: docker-compose rm
+      args:
+        chdir: "{{ compose_dir }}" 
+
+    - name: pull docker-compose containers
+      command: docker-compose pull
+      args:
+        chdir: "{{ compose_dir }}" 
+      register: output
+
+    - debug:
+        var: output
+
+    - name: start docker-compose containers
+      command: docker-compose up -d
+      args:
+        chdir: "{{ compose_dir }}" 
+      register: output
+
+    - debug:
+        var: output
+ 
+    - name: check status
+      command: docker ps
+      register: output
+
+    - debug:
+        var: output
+
