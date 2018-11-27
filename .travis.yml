@@ -2,12 +2,16 @@ language: python
 
 install:
   - sudo docker build -t twitter_api:latest .
+  - sudo docker build -t mongo_q:latest ./webapp
 
 script:
   - docker tag twitter_api:latest danbaror/twittc:twitter_api
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push danbaror/twittc:twitter_api
+  - docker tag mongo_q:latest danbaror/twittc:mongo_q
+  - docker push danbaror/twittc:mongo_q
   - ls -lah
   - docker-compose up -d 
+  - wait 3
   - docker-compose ps
 
