@@ -12,6 +12,6 @@ script:
   - docker push danbaror/twittc:mongo_q
   - ls -lah
   - docker-compose up -d 
-  - wait 3
+  - sleep 3
   - docker-compose ps
 
