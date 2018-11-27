@@ -38,11 +38,6 @@
       args:
         chdir: "{{ compose_dir }}" 
 
-    - name: remove previous images
-      command: docker image ls -a | grep -e mongo_q -e twitter_app | xargs docker image rm
-      args:
-        chdir: "{{ compose_dir }}" 
-
     - name: remove stopped containers
       command: docker-compose rm
       args:
