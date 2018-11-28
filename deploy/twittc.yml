@@ -1,5 +1,5 @@
 ---
-- name: Run using a project directory
+- name: Ansible playbook for twitter countr app
   hosts: webapp
   connection: local
   gather_facts: no
